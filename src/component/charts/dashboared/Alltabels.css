@@ -1,0 +1,37 @@
+.tabel::-webkit-scrollbar {
+    width: 10px;
+    border-radius: 10px;
+  }
+  
+  .tabel::-webkit-scrollbar-track {
+    background: rgba(84, 200, 200, 0.8);
+
+    border-radius: 10px;
+  }
+  
+  .tabel::-webkit-scrollbar-thumb {
+    background: rgba(54, 149, 149, 0.8);
+
+    border-radius: 10px;
+  }
+  
+  .tabel::-webkit-scrollbar-thumb:hover {
+    background: rgba(68, 221, 221, 0.8);
+
+  }
+  
+  .tr:nth-child(even){
+    background-color:#7cebf7;
+  }
+  .tr:nth-child(even):hover{
+    background-color:#66e1ef;
+  }
+  .tr:nth-child(odd){
+    background-color:#a2f4fd;
+  }
+  .tr:nth-child(odd):hover{
+    background-color:#8af3ff;
+
+  }
+
+  

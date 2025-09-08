@@ -1,0 +1,278 @@
+
+Solid
+Sat, Aug 16, 9:29 AM (2 days ago)
+to me
+
+Requirements for Pharmacy Management System
+🎯 Core Features (must have)
+Authentication
+
+Login / Register for Admin & Staff
+
+Dashboard
+
+Overview of stock, sales, and expiry alerts
+
+Inventory Management
+
+Add, edit, delete medicines
+
+Track quantity, expiry date, manufacturer
+
+Pharmacy Sales
+
+Sell medicines (search drug, add to cart, checkout)
+
+Reduce stock automatically after sale
+
+Purchase / Restock
+
+Add new stock from suppliers
+
+Prescription Handling
+
+Add prescriptions (basic: patient name + medicines list)
+
+Reports
+
+Daily/weekly/monthly sales report
+
+Low stock/expiry alerts
+
+Basic User Roles
+
+Admin: Full control
+
+Staff: Limited (only sales, prescriptions)
+
+📄 Pages Needed
+1. Authentication
+Login Page
+
+Register Page (only admin can add staff accounts)
+
+2. Dashboard
+Quick stats:
+
+Total Medicines
+
+Total Sales Today
+
+Low Stock Alerts
+
+Expired Medicines
+
+3. Inventory
+List of medicines (search + filter by category/expiry)
+
+Add Medicine (form: name, category, manufacturer, purchase price, sale price, quantity, expiry date)
+
+Edit / Delete Medicine
+
+4. Pharmacy (Sales)
+Search medicines
+
+Add to cart & Checkout
+
+Generate Invoice (simple table with patient name, medicines, total)
+
+5. Purchase (Restock)
+Add new stock (link to medicine + supplier + quantity + purchase price)
+
+6. Prescriptions
+Add prescription (patient name, age, doctor, medicines prescribed)
+
+View prescriptions list
+
+7. Reports
+Sales Report (daily/weekly/monthly)
+
+Stock Report (low stock, expired medicines)
+
+8. Settings
+Manage users (Admin adds staff)
+
+Pharmacy profile (name, address, contact)
+
+🗄 Database Requirements (Simple)
+Users (id, name, email, password, role)
+
+Medicines (id, name, category, manufacturer, purchase_price, sale_price, quantity, expiry_date)
+
+Sales (id, date, user_id, total_amount)
+
+SaleItems (id, sale_id, medicine_id, quantity, price)
+
+Purchases (id, medicine_id, supplier_name, quantity, purchase_price, date)
+
+Prescriptions (id, patient_name, doctor, date, notes)
+
+PrescriptionItems (id, prescription_id, medicine_id, quantity)
+
+📅 2-Week Plan for Intern
+Week 1 – Setup & Core Modules
+Day 1-2
+
+Setup project (React or PHP/Laravel/Django backend)
+
+Setup DB schema & Authentication (Login/Register)
+
+Day 3-4
+
+Build Dashboard page (basic stats, fetch from DB)
+
+Day 5-6
+
+Inventory Module
+
+Add/Edit/Delete Medicine
+
+Medicine list with search
+
+Day 7
+
+Testing inventory + expiry/low stock alerts
+
+Week 2 – Sales, Prescriptions & Reports
+Day 8-9
+
+Sales Module
+
+Search medicine
+
+Add to cart & checkout
+
+Update stock after sale
+
+Day 10
+
+Generate simple invoice after checkout
+
+Day 11-12
+
+Prescription Module
+
+Add prescription with medicines
+
+Link prescription → medicines
+
+Day 13
+
+Reports Module (sales report, stock alerts)
+
+Day 14 (Final Day)
+
+Review & Testing
+
+Fix bugs, polish UI
+
+Submit project
+
+✅ By the end of 2 weeks, the intern will have a fully functional Pharmacy Management System with all key features.
+
+
+On Sat, Aug 16, 2025 at 9:27 AM Abmatin Faizi <abmatinf@gmail.com> wrote:
+
+
+
+Solid
+Sat, Aug 16, 9:30 AM (2 days ago)
+to me
+
+ Design Decisions for Pharmacy Management System
+1. Layout & Structure
+Use a sidebar + top bar layout:
+
+Sidebar (left): Navigation (Dashboard, Inventory, Sales, Prescriptions, Reports, Settings)
+
+Top bar (header): User profile, notifications, logout
+
+Main content area: Displays each page’s data (tables, forms, charts)
+
+✅ This makes it look like a real admin panel and gives good UX.
+
+2. Color Palette
+Primary color: Green (healthcare theme) – e.g. #10B981 (Tailwind’s emerald-500)
+
+Secondary color: Blue for highlights – e.g. #3B82F6 (Tailwind’s blue-500)
+
+Background: Light gray #F9FAFB (Tailwind’s gray-50)
+
+Text: Dark gray #111827 for readability
+
+✅ Green is linked with healthcare, freshness, and trust.
+
+3. Typography
+Font: Use a clean sans-serif like Inter or Roboto
+
+Sizes:
+
+Page titles: text-2xl font-bold
+
+Section titles: text-lg font-semibold
+
+Body text: text-sm or text-base
+
+✅ Keep it readable, professional, and consistent.
+
+4. Components
+Buttons: Rounded with clear color meaning
+
+Primary: Green (Save, Add, Checkout)
+
+Secondary: Gray/blue (Cancel, Back)
+
+Tables:
+
+Striped rows (odd:bg-gray-50)
+
+Action buttons (Edit, Delete) with icons
+
+Forms:
+
+Two-column layout for larger forms
+
+Required fields marked with *
+
+Cards (Dashboard):
+
+Small stat cards with icons (e.g., 💊 Medicines, 📦 Low Stock, 🕒 Expiring Soon, 💵 Sales Today)
+
+5. Navigation Flow
+Login → Dashboard → (choose module)
+
+Inventory: Add/edit → automatically updates list
+
+Sales: Search medicine → add to cart → checkout → generate invoice
+
+Prescriptions: Add prescription → select medicines → save → link to stock
+
+Reports: Export to PDF/CSV optional (stretch goal)
+
+6. UI Tools (for intern to use)
+Frontend:
+
+Tailwind CSS (simple, fast, professional)
+
+Optionally ShadCN UI or Material UI for ready-made components
+
+Charts (Reports):
+
+Use Recharts (React) or Chart.js (if simple)
+
+7. Example Page Layouts
+Dashboard:
+Grid with 4 cards (Total Medicines, Today’s Sales, Low Stock, Expired) + simple sales chart
+
+Inventory:
+Table of medicines + “Add Medicine” button → modal/form
+
+Sales:
+Search bar + list → Add to Cart → Cart summary → Checkout button
+
+Prescriptions:
+Form with patient info + medicine selection dropdown
+
+Reports:
+Date filter + table/chart of sales
+
