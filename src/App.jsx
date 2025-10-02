@@ -23,7 +23,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<Autenticate />} />
         <Route path="*" element={<NotFound />} />
-        {/* <Route element={<Protected />}> */}
+        <Route element={<Protected />}>
         <Route path="*" element={<NotFound />} />
         <Route path="/" element={<Dashboared></Dashboared>}>
           <Route path="/" element={<Stocks />} />
@@ -35,7 +35,7 @@ function App() {
           <Route path="admin" element={<AdminPanel/>} />
           <Route path="pharmacy" element={<Pahrmacy/>} />
           <Route path="note" element={<Note/>} />
-        {/* </Route> */}
+        </Route>
         </Route>
       </Routes>
     </div>
