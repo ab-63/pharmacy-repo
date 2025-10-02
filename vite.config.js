@@ -5,7 +5,7 @@ import tailwindcss from "@tailwindcss/vite";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: process.env.VITE_BASE - PATH || "/pharmacy-repo",
+  base: process.env.VITE_BASE_PATH || "/pharmacy-repo",
   server: {
     port: 3000,
   },
@@ -13,4 +13,3 @@ export default defineConfig({
     exclude: ["chartjs-adapter-date-fns"],
   },
 });
-// vite.config.js
