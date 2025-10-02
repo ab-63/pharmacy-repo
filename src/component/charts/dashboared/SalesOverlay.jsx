@@ -1,136 +1,230 @@
-import React, { useState } from "react";
-import Modal from "../../modaloverlay/Modal";
+import React, { useEffect, useState } from "react";
 import ModalPrice from "../../modaloverlay/ModalPrice";
-import SalesList from "./SalesList";
 import SalesSelection from "./SalesSelection";
 import useAppContext from "../../../context/useAppContext";
-function SalesOverlay({ onClose, onData, setModal, setSaleData, saleData }) {
-  const [enterValue, setValue] = useState("");
-  const [enterQauntity, setQauntity] = useState("");
-  const [enterDate, setDate] = useState("");
-  const [enterPrice, setPrice] = useState("");
-  const [id, setId] = useState();
-  const { allMedicines, setAllMedicines } = useAppContext();
-  const onSelect = (value) => {
-    setValue(value);
-  };
-  const [findQuan, setfindQuant] = useState(null);
-  const [isQuantity, setIsQuantity] = useState(false);
 
-  const closeModal = () => {
-    setModal(false);
+function SalesOverlay({ onClose, onData, setModal }) {
+  const {
+    pharmacyState,
+    setPharmacyState,
+    setBillPrint,
+    printBill,
+    setIsPrint,
+  } = useAppContext();
+  const [selectedMedicine, setSelectedMedicine] = useState(null);
+  const [quantity, setQuantity] = useState("");
+  const [enterDate, setEnterDate] = useState("");
+  const [putAllFindMedicine, setPutAllFindMedicine] = useState([]);
+  const [isQuantityError, setIsQuantityError] = useState(false);
+
+  // useEffect(()=>{
+  //   if(printBill.length>0){
+
+  //   }
+  // },[printBill])
+
+  const closeModal = () => setModal(false);
+
+  // 🛒 Add to cart
+  const cartHandler = () => {
+    if (!selectedMedicine) {
+      alert("Please select a medicine");
+      return;
+    }
+
+    const qty = Number(quantity);
+
+    if (qty <= 0 || qty > selectedMedicine.quantity) {
+      setIsQuantityError(true);
+      return; // Prevent adding
+    }
+
+    // Add to cart
+    setPutAllFindMedicine((prev) => [
+      ...prev,
+      { ...selectedMedicine, quantity: qty },
+    ]);
+
+    // Reset input
+    setQuantity("");
+    setSelectedMedicine(null);
+    setIsQuantityError(false);
   };
 
+  // ✅ Final submit: process all cart items
   const submitHandler = (e) => {
     e.preventDefault();
-
-    const data = {
-      id: id,
-      name: enterValue,
-      quantity: enterQauntity,
-      date: enterDate,
-      price: enterPrice,
-    };
-
-    // const findSale = saleData.find((item) => item.id === data.id);
-    const findMedicine = allMedicines.find((item) => item.id === data.id);
-    setfindQuant(findMedicine.qauntity);
-    if (
-      findMedicine.qauntity > 0 &&
-      findMedicine.qauntity >= enterQauntity &&
-      enterQauntity > 0
-    ) {
-      setIsQuantity(false);
-      if (enterValue && enterQauntity && enterDate && enterPrice) {
-        onData(data);
-        setModal(false);
-        // let updateItems;
-        // const existanceItem = allMedicines[findNum];
-        // const updateItem = {
-        //   ...existanceItem,
-        //   qauntity: existanceItem.qauntity - data.quantity,
-        // };
-        // updateItems = allMedicines;
-        // (updateItems[findNum] = updateItem);
-
-        // setAllMedicines(updateItems)
-        // console.log(setAllMedicines(pre => pre[2]));
-        setAllMedicines((pre) =>
-          pre.map((item) => {
-            return item.id === data.id
-              ? { ...item, qauntity: +item.qauntity - +data.quantity }
-              : item;
-          })
-        );
-      } else {
-        return;
-      }
-    } else {
-      setIsQuantity(true);
-      console.log("not");
+  
+    const qty = Number(quantity);
+  
+    // Validation
+    if (!selectedMedicine) {
+      alert("Please select a medicine");
+      return;
     }
+  
+    if (qty <= 0 || qty > selectedMedicine.quantity) {
+      setIsQuantityError(true);
+      return; // stop selling
+    }
+  
+    setIsQuantityError(false);
+  
+    // Add current medicine to cart
+    const updatedCart = [
+      ...putAllFindMedicine,
+      { ...selectedMedicine, quantity: qty },
+    ];
+    setPutAllFindMedicine(updatedCart);
+  
+    // Update print data
+    setBillPrint(
+      updatedCart.map((med) => ({
+        ...med,
+        totalAmount: Number(med.price) * Number(med.quantity),
+      }))
+    );
+  
+    // Update pharmacy stock
+    setPharmacyState((prev) =>
+      prev.map((m) => {
+        const soldMedicine = updatedCart.find((pm) => pm.id === m.id);
+        return soldMedicine
+          ? { ...m, quantity: m.quantity - soldMedicine.quantity }
+          : m;
+      })
+    );
+  
+    // Send sales data to parent
+    const salesData = updatedCart.map((med) => ({
+      id: +med.id,
+      name: med.name,
+      quantity: +med.quantity,
+      date: enterDate || new Date().toISOString().split("T")[0],
+      price: +med.price,
+      totalAmount: Number(med.quantity) * Number(med.price),
+    }));
+  
+    onData(salesData);
+    setIsPrint(true);
+    setModal(false);
+  
+    // Reset input
+    setQuantity("");
+    setSelectedMedicine(null);
+    setPutAllFindMedicine([]);
   };
+  
 
   return (
     <ModalPrice onClose={onClose}>
-      <h2 className="text-center font-semibold mb-10 text-lg">Sell Medicine</h2>
-      <div className=" ">
-        <form className="" onSubmit={submitHandler}>
-          <div className="grid grid-cols-2 gap-3 gap-y-4">
-            <SalesSelection
-              data={allMedicines}
-              optionHandler={onSelect}
-              setId={setId}
-            />
 
-            <input
-              type="text"
-              placeholder="Quantity"
-              value={enterQauntity}
-              onChange={(e) => setQauntity(e.target.value)}
-              className="outline-none py-1.5 px-3  border-2 border-cyan-400 rounded"
-            />
-            <input
-              type="date"
-              placeholder="Date"
-              value={enterDate}
-              onChange={(e) => setDate(e.target.value)}
-              className="outline-none py-1.5 px-3  border-2 border-cyan-400 rounded"
-            />
-            <input
-              type="num"
-              placeholder="Price"
-              value={enterPrice}
-              onChange={(e) => setPrice(e.target.value)}
-              className="outline-none py-1.5 px-3  border-2 border-cyan-400 rounded"
-            />
-          </div>
-          <div className="self-end space-x-3 mt-6 w-full grid grid-cols-[2fr_1fr] ">
-            <div className="">
-              {isQuantity && (
-                <p className="  text-red-600 ">
-                  The Quantity of Medicine is ({findQuan}) but you sell (
-                  {enterQauntity})
-                </p>
-              )}
+      <h2 className="text-center font-semibold mb-10 text-lg">Sell Medicine</h2>
+      <input
+        type="date"
+        placeholder="Enter Date"
+        value={enterDate}
+        onChange={(e) => setEnterDate(e.target.value)}
+        className="outline-none py-1.5 px-3 border-2 w-full border-cyan-400 rounded mb-5"
+      />
+      {/* 🛒 Cart Preview */}
+      {/* <div className=""> */}
+      <div className="max-h-[13rem] overflow-y-auto tabel" >
+        <div className="flex flex-col">
+          {putAllFindMedicine.map((med, i) => (
+            <div key={i} className="grid grid-cols-2 gap-3 gap-y-4 mb-4">
+              <input
+                type="text"
+                value={med.name}
+                onChange={(e) => {
+                  const item = putAllFindMedicine.map((item, index) =>
+                    index === i ? { ...item, name: e.target.value } : item
+                  );
+                  setPutAllFindMedicine(item);
+                }}
+                className="outline-none py-1.5 px-3 border-2 border-cyan-400 rounded"
+              />
+              <input
+                type="number"
+                value={+med.quantity}
+                onChange={(e) => {
+                  const item = putAllFindMedicine.map((item, index) =>
+                    index === i ? { ...item, quantity: e.target.value } : item
+                  );
+                  setPutAllFindMedicine(item);
+                }}
+                className="outline-none py-1.5 px-3 border-2 border-cyan-400 rounded"
+              />
             </div>
-            <div className=" space-x-4 flex items-center  justify-self-end">
-              <button
-                type="submit"
-                className="bg-cyan-400 py-1 px-8 border-2 border-cyan-400 hover:bg-cyan-300 transition duration-200 cursor-pointer rounded"
-              >
-                Sell
-              </button>
-              <button
-                className="border-2 border-cyan-400 py-1 px-4 hover:bg-cyan-300 transition duration-200 cursor-pointer rounded"
-                onClick={closeModal}
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </form>
-      </div>
+          ))}
+        </div>
+        </div>
+
+      {/* Form */}
+      <form onSubmit={submitHandler}>
+        <div className="grid grid-cols-2 gap-3 gap-y-4">
+          <SalesSelection
+            key={selectedMedicine ? selectedMedicine.id : "new"}
+            data={pharmacyState}
+            setId={(id) => {
+              const med = pharmacyState.find((m) => +m.id === +id);
+              setSelectedMedicine(med || null);
+            }}
+            onChange={(val) => {
+              // if (selectedMedicine) {
+              setSelectedMedicine({ ...selectedMedicine, name: val });
+              // }
+            }}
+            value={selectedMedicine ? selectedMedicine.name : ""}
+          />
+
+          <input
+            type="number"
+            placeholder="Quantity"
+            value={quantity}
+            onChange={(e) => setQuantity(e.target.value)}
+            className="outline-none py-1.5 px-3 border-2 border-cyan-400 rounded"
+            onKeyDown={(e) => {
+              if (e.key === " ") {
+                e.preventDefault();
+                cartHandler();
+              }
+            }}
+          />
+        </div>
+
+        {isQuantityError && selectedMedicine && (
+          <p className="text-red-600 mt-3">
+            Stock is ({selectedMedicine.quantity}), but you tried to sell (
+            {quantity})
+          </p>
+        )}
+
+        {/* Buttons */}
+        {/* <button
+          type="button"
+          onClick={cartHandler}
+          className="bg-cyan-400 py-1 cursor-pointer px-8 border-2 border-cyan-400 hover:bg-cyan-300 rounded mt-4"
+        >
+          Add Medicine
+        </button> */}
+        <div className="mt-6 flex justify-end space-x-4">
+          <button
+            type="submit"
+            className="bg-cyan-400 py-1 px-8 border-2 cursor-pointer border-cyan-400 hover:bg-cyan-300 rounded"
+          >
+            Sell
+          </button>
+          <button
+            type="button"
+            onClick={closeModal}
+            className="border-2 border-cyan-400 cursor-pointer py-1 px-4 hover:bg-cyan-300 rounded"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+
     </ModalPrice>
   );
 }

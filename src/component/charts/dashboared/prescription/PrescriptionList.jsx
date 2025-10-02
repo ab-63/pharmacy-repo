@@ -6,7 +6,7 @@ function PrescriptionList({ items, searData }) {
 
   return (
     <div
-    className="overflow-scroll max-h-[32rem] shadow-md rounded-lg
+    className="overflow-scroll max-h-[28rem] shadow-md rounded-lg
   overflow-y-auto overflow-x-auto scrollbar scrollbar-thumb-cyan-900 scrollbar-track-cyan-100
   tabel
   ">

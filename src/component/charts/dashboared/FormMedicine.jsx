@@ -5,18 +5,29 @@ function FormMedicine({ onDataHandler }) {
   const { modalOpen, closeModal } = useAppContext();
   const [enterName, setName] = useState("");
   const [enterQauntity, setQauntity] = useState("");
+  const [enterLowStock, setLowStock] = useState("");
   const [enterExpireDate, setExpireDate] = useState("");
+  const [enterExpireDuration, setExpireDuration] = useState("");
   const [enterManueFacture, setManueFacture] = useState("");
   const submitHandler = (e) => {
     e.preventDefault();
     const allData = {
       name: enterName,
       qauntity: +enterQauntity,
+      lowStock: +enterLowStock,
       expireDate: enterExpireDate,
+      expireDuration: +enterExpireDuration,
       manuefacture: enterManueFacture,
     };
 
-    if (enterName && enterQauntity && enterExpireDate && enterManueFacture) {
+    if (
+      enterName &&
+      enterQauntity &&
+      enterExpireDate &&
+      enterManueFacture &&
+      enterExpireDuration &&
+      enterLowStock
+    ) {
       onDataHandler(allData);
 
       closeModal();
@@ -57,6 +68,7 @@ function FormMedicine({ onDataHandler }) {
                 value={enterName}
                 className=" py-1.5 outline-none w-full mt-1.5  px-3 border rounded  border-cyan-300"
                 onChange={(e) => setName(e.target.value)}
+                required
               />
             </div>
             <div className="">
@@ -70,6 +82,21 @@ function FormMedicine({ onDataHandler }) {
                 value={enterQauntity}
                 className=" py-1.5 outline-none w-full mt-1.5  px-3 border rounded  border-cyan-300"
                 onChange={(e) => setQauntity(e.target.value)}
+                required
+              />
+            </div>
+            <div className="">
+              <label htmlFor="lowStock" className="font-semibold block">
+                Min Level
+              </label>
+              <input
+                type="number"
+                id="lowStock"
+                placeholder="lowStock"
+                value={enterLowStock}
+                className=" py-1.5 outline-none w-full mt-1.5  px-3 border rounded  border-cyan-300"
+                onChange={(e) => setLowStock(e.target.value)}
+                required
               />
             </div>
 
@@ -84,6 +111,21 @@ function FormMedicine({ onDataHandler }) {
                 value={enterExpireDate}
                 className=" py-1.5 outline-none w-full mt-1.5  px-3 border rounded  border-cyan-300"
                 onChange={(e) => setExpireDate(e.target.value)}
+                required
+              />
+            </div>
+            <div className="">
+              <label htmlFor="Expire " className="font-semibold block">
+                Expire Druration
+              </label>
+              <input
+                type="number"
+                id="Expire "
+                placeholder="Expire Duration"
+                value={enterExpireDuration}
+                className=" py-1.5 outline-none w-full mt-1.5  px-3 border rounded  border-cyan-300"
+                onChange={(e) => setExpireDuration(e.target.value)}
+                required
               />
             </div>
             <div className="">
@@ -97,6 +139,7 @@ function FormMedicine({ onDataHandler }) {
                 value={enterManueFacture}
                 className=" py-1.5 outline-none w-full mt-1.5  px-3 border rounded  border-cyan-300"
                 onChange={(e) => setManueFacture(e.target.value)}
+                required
               />
             </div>
             <button className="bg-cyan-400 col-start-2 py-1.5 px-6 rounded hover:bg-cyan-300 transition duration-200 cursor-pointer mt-4 justify-self-end">

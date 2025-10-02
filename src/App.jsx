@@ -1,8 +1,11 @@
 import React, { useContext } from "react";
 import { Route, Routes } from "react-router-dom";
 import Autenticate from "./component/Authentication/Authentication";
+import AdminPanel from "./component/charts/dashboared/AdminPanel";
 import Dashboared from "./component/charts/dashboared/Dashboared";
 import Medicine from "./component/charts/dashboared/Medicine";
+import Note from "./component/charts/dashboared/note/Note";
+import Pahrmacy from "./component/charts/dashboared/Pahrmacy";
 import Prescription from "./component/charts/dashboared/prescription/Prescription";
 import Purchase from "./component/charts/dashboared/purchase/Purchase";
 import Report from "./component/charts/dashboared/report/Report";
@@ -29,8 +32,11 @@ function App() {
           <Route path="purchase" element={<Purchase />} />
           <Route path="prescription" element={<Prescription />} />
           <Route path="report" element={<Report />} />
-        </Route>
+          <Route path="admin" element={<AdminPanel/>} />
+          <Route path="pharmacy" element={<Pahrmacy/>} />
+          <Route path="note" element={<Note/>} />
         {/* </Route> */}
+        </Route>
       </Routes>
     </div>
   );

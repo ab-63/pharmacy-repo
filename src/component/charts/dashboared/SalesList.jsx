@@ -8,7 +8,7 @@ function SalesList({ items, onSaleHandler, searData }) {
 
   return (
     <div
-    className="overflow-scroll max-h-[32rem] shadow-md rounded-lg
+    className="overflow-scroll max-h-[28rem] shadow-md rounded-lg
   overflow-y-auto overflow-x-auto scrollbar scrollbar-thumb-cyan-900 scrollbar-track-cyan-100
   tabel
   ">
@@ -32,9 +32,9 @@ function SalesList({ items, onSaleHandler, searData }) {
                     ? search
                     : search.name.toLowerCase().includes(searData.toLowerCase())
                 )
-                .map((item) => {
+                .map((item,i) => {
                   return (
-                    <tr className="tr">
+                    <tr className="tr" key={i}>
                       <td className=" py-2 px-4  ">
                         {item.name}
                       </td>

@@ -4,6 +4,7 @@ import SalesList from "./SalesList";
 import SalesOverlay from "./SalesOverlay";
 import useAppContext from "../../../context/useAppContext";
 import Pagination from "./Pagination";
+import SalePrint from "./SalePrint";
 
 // const item = [];
 // const initialState = () => {
@@ -22,19 +23,19 @@ function Sales() {
   const [enterSearch, setSearch] = useState("");
 
   const [isModal, setModal] = useState(false);
-  const { setToalSale } = useAppContext();
+  const { setTotalSale,isPrint,setIsPrint } = useAppContext();
   const { saleData, setSaleData } = useAppContext();
   const allSales = saleData
     .map((sale) => sale.totalAmount)
     .reduce((a, b) => a + b, 0);
   useEffect(() => {
-    setToalSale(allSales);
+    setTotalSale(allSales);
   }, [saleData]);
 
   const [currPage, setCurrPage] = useState(1);
   const [filtered, setFiltered] = useState(5);
-  
-  const lastIndex = currPage * filtered;
+
+  const lastIndex = (currPage * filtered);
   const firstIndex = lastIndex - filtered;
   const recordPages = saleData.slice(firstIndex, lastIndex);
   const npages = Math.ceil(saleData.length / filtered);
@@ -43,17 +44,15 @@ function Sales() {
 
   // })
 
-  const allData = (data) => {
-    // const items= data || []
-    setSaleData((pre) => {
-      return [...pre, { ...data }].map((total) => ({
-        ...total,
-        totalAmount: total.price * total.quantity,
-      }));
-    });
-    // setSaleData(data);
+  const allData = (newItems) => {
+    setSaleData((prev) => [
+      ...prev,
+      ...newItems.map((item) => ({
+        ...item,
+        totalAmount: item.price * item.quantity,
+      })),
+    ]);
   };
-
   const salesHandler = (id) => {
     const findMedicine = items.find((item) => item.id === id);
   };
@@ -94,14 +93,26 @@ function Sales() {
             saleData={saleData}
           />
         )}
+
+        {isPrint && <SalePrint/>}
         <SalesList
           items={recordPages}
           searData={enterSearch}
           onSaleHandler={salesHandler}
         />
       </div>
-     <Pagination currPage={currPage} filtered={filtered} setFiltered ={setFiltered} setCurrPage={setCurrPage} numberPages={numberPages} npages={npages}/>
-
+      <div className="flex justify-between items-center">
+  <p className="text-md">You see <span className="font-semibold">  {firstIndex+1} </span> to <span className="font-semibold"> 
+  {lastIndex}</span> result of <span className="font-semibold"> {filtered}</span></p>
+      <Pagination
+        currPage={currPage}
+        filtered={filtered}
+        setFiltered={setFiltered}
+        setCurrPage={setCurrPage}
+        numberPages={numberPages}
+        npages={npages}
+        />
+        </div>
     </div>
   );
 }

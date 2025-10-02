@@ -72,8 +72,11 @@ function Prescription() {
       )}
       <PrescriptionList items={recordPages} searData={enterSearch} />
       </div>
+      <div className="flex justify-between items-center">
+  <p className="text-md">You see <span className="font-semibold">  {firstIndex+1} </span> to <span className="font-semibold"> 
+  {lastIndex}</span> result of <span className="font-semibold"> {filtered}</span></p>
       <Pagination currPage={currPage} filtered={filtered} setFiltered ={setFiltered} setCurrPage={setCurrPage} numberPages={numberPages} npages={npages}/>
-
+</div>
     </div>
   );
 }

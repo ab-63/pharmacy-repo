@@ -36,14 +36,14 @@ function Purchase() {
     purchaseInitialState()
   );
   const [isModal, setModal] = useState(false);
-  const { setToalPurchase } = useAppContext();
+  const { setTotalPurchase } = useAppContext();
   const purchaseDataarray = purchaseData || [];
   const totalPurchase = purchaseDataarray
     .map((purchase) => purchase?.totalAmount)
     .reduce((a, b) => a + b, 0);
   useEffect(() => {
     localStorage.setItem("Purchase", JSON.stringify(purchaseData));
-    setToalPurchase(totalPurchase);
+    setTotalPurchase(totalPurchase);
   }, [purchaseData]);
 
   const [currPage, setCurrPage] = useState(1);
@@ -122,8 +122,11 @@ function Purchase() {
         />
       </div>
       
+      <div className="flex justify-between items-center">
+  <p className="text-md">You see <span className="font-semibold">  {firstIndex+1} </span> to <span className="font-semibold"> 
+  {lastIndex}</span> result of <span className="font-semibold"> {filtered}</span></p>
      <Pagination currPage={currPage} filtered={filtered} setFiltered ={setFiltered} setCurrPage={setCurrPage} numberPages={numberPages} npages={npages}/>
-
+</div>
     </div>
   );
 }

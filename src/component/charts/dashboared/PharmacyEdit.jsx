@@ -2,27 +2,47 @@ import React, { useState } from "react";
 import Modal from "../../modaloverlay/Modal";
 import useAppContext from "../../../context/useAppContext";
 
-function EditMedicine({ id, data, inputData, setAllMedicines }) {
+function PharmacyEdit({
+  id,
+  data,
+  inputData,
+  findMedicine,
+  setPharmacyState,
+}) {
   //   const [editData, setEditData] = useState(data);
   const [editInputData, setInputData] = useState({
     name: inputData.name || "",
-    qauntity: inputData.qauntity || "",
-    lowStock: inputData.lowStock || "",
-    expireDate: inputData.expireDate || "",
+    quantity: inputData.quantity || "",
     expireDuration: inputData.expireDuration || "",
-    manuefacture: inputData.manuefacture || "",
+    lowStock: inputData.lowStock || "",
+    date: inputData.date || "",
+    price: inputData.price || "",
   });
-  const { editModalClose } = useAppContext();
+  const { setPharmacyModal } = useAppContext();
+
+  const closePharmacyEdit = () => {
+    setPharmacyModal(false);
+  };
   const submitHandler = (e) => {
     e.preventDefault();
-
-    setAllMedicines((itemData) =>
-      itemData.map((it) => (it.id === id ? { ...it, ...editInputData } : it))
+    setPharmacyState((pre) =>
+      pre.map((medicine) => {
+        console.log(editInputData);
+        return medicine.id === id
+          ? {
+              ...medicine,
+              ...editInputData,
+              totalAmount: Number(editInputData.price) * Number(editInputData.quantity),
+            }
+          : medicine;
+      })
     );
-    editModalClose();
+
+    closePharmacyEdit();
   };
+
   return (
-    <Modal onClose={editModalClose}>
+    <Modal onClose={closePharmacyEdit}>
       <div className="px-3 pb-2">
         <div className="mb-6 text-center">
           <div className="flex justify-center mb-3">
@@ -67,14 +87,14 @@ function EditMedicine({ id, data, inputData, setAllMedicines }) {
               type="number"
               id="Qauntity"
               placeholder="Qauntity"
-              value={editInputData.qauntity}
+              value={editInputData.quantity}
               className=" py-1.5 outline-none w-full mt-1.5  px-3 border rounded  border-cyan-400"
               onChange={(e) =>
-                setInputData((pre) => ({ ...pre, qauntity: e.target.value }))
+                setInputData((pre) => ({ ...pre, quantity: +e.target.value }))
               }
             />
           </div>
-          
+
           <div className="">
             <label htmlFor="low-Stock" className="font-semibold block">
               Low Stock
@@ -99,54 +119,54 @@ function EditMedicine({ id, data, inputData, setAllMedicines }) {
               type="date"
               id="Expire Date"
               placeholder="Expire Date"
-              value={editInputData.expireDate}
+              value={editInputData.date}
               className=" py-1.5 outline-none w-full mt-1.5  px-3 border rounded  border-cyan-400"
               onChange={(e) =>
-                setInputData((pre) => ({ ...pre, expireDate: e.target.value }))
+                setInputData((pre) => ({ ...pre, date: e.target.value }))
               }
             />
           </div>
           <div className="">
             <label htmlFor="Expire Date" className="font-semibold block">
-              Expire Duration
+              Price
             </label>
             <input
               type="number"
               id="Expire "
-              placeholder="Expire Duration"
-              value={editInputData.expireDuration}
+              placeholder="Price"
+              value={editInputData.price}
               className=" py-1.5 outline-none w-full mt-1.5  px-3 border rounded  border-cyan-400"
               onChange={(e) =>
-                setInputData((pre) => ({ ...pre, expireDuration: e.target.value }))
+                setInputData((pre) => ({ ...pre, price: +e.target.value }))
               }
             />
           </div>
           <div className="">
-            <label htmlFor="Manuefacture" className="font-semibold block">
-              Manuefacture
+            <label htmlFor="duration" className="font-semibold block">
+              Expire Duration
             </label>
             <input
-              type="text"
-              id="Manuefacture"
-              placeholder="Manuefacture"
-              value={editInputData.manuefacture}
+              type="number"
+              id="duration "
+              placeholder="Price"
+              value={editInputData.expireDuration}
               className=" py-1.5 outline-none w-full mt-1.5  px-3 border rounded  border-cyan-400"
               onChange={(e) =>
                 setInputData((pre) => ({
                   ...pre,
-                  manuefacture: e.target.value,
+                  expireDuration: +e.target.value,
                 }))
               }
-              //   onChange={(e) => setManueFacture(e.target.value)}
             />
           </div>
+
           <div className="col-start-2 mt-4 justify-self-end">
             <button className="bg-cyan-400  py-1.5 px-9 mr-4 rounded hover:bg-cyan-300 transition duration-200 cursor-pointer ">
               Edit
             </button>
             <button
               className="border border-cyan-400  py-1.5 px-6 rounded hover:bg-cyan-300 transition duration-200 cursor-pointer "
-              onClick={editModalClose}
+              onClick={closePharmacyEdit}
             >
               Cancel
             </button>
@@ -157,4 +177,4 @@ function EditMedicine({ id, data, inputData, setAllMedicines }) {
   );
 }
 
-export default EditMedicine;
+export default PharmacyEdit;

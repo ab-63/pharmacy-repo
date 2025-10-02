@@ -16,7 +16,7 @@ const ModalOverlay = (props) => {
     <div
       className="max-w-2xl lg:w-1/3 md:w-1/2 w-4/5
      bg-cyan-100 absolute top-1/2 left-1/2 
-     transform  -translate-y-1/2 -translate-x-1/2 p-3 rounded "
+     transform  -translate-y-1/2 -translate-x-1/2 p-3 rounded z-50"
     >
       <div className="flex ">
         <button
@@ -44,7 +44,7 @@ const ModalOverlay = (props) => {
   );
 };
 
-function Modal(props) {
+function ModalPrice(props) {
   return (
     <Fragment>
       {ReactDOM.createPortal(
@@ -59,4 +59,4 @@ function Modal(props) {
   );
 }
 
-export default Modal;
+export default ModalPrice;

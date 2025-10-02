@@ -14,9 +14,9 @@ const Overlay = (props) => {
 const ModalOverlay = (props) => {
   return (
     <div
-      className="max-w-3xl w-5/6  
+      className="max-w-2xl w-3/4
      bg-cyan-100 absolute top-1/2 left-1/2 
-     transform  -translate-y-1/2 -translate-x-1/2 p-3 rounded "
+     transform  -translate-y-1/2 -translate-x-1/2 p-3 rounded z-50"
     >
       <div className="flex ">
         <button

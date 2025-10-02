@@ -1,9 +1,12 @@
 import React, { useEffect, useReducer, useState } from "react";
+import Pahrmacy from "../component/charts/dashboared/Pahrmacy";
 
 const admin = {
   Email: "m@gmail.com",
   Password: "1234",
 };
+
+// Default context values
 export const Context = React.createContext({
   email: false,
   password: false,
@@ -16,257 +19,208 @@ export const Context = React.createContext({
   isEditModalOpen: false,
   totalAmount: 0,
   allTypesAmount: 0,
-  setTotalAmount: null,
-  setAlltypeAmount: null,
-  expireMedicine: 0,
-  setExpireMedicine: null,
-  totalSale: 0,
+  setTotalAmount: () => {},
+  setAlltypeAmount: () => {},
+  expireMedicine: [],
+  printBill: null,
+  setBillPrint: () => {},
+  isPrint: false,
+  setIsPrint: () => {},
+  expiredMedicines: [],
+  isPharmacyModal: false,
+  setPharmacyModal: () => {},
+  setExpireMedicine: () => {},
+  setExpiredMedicines: () => {},
+  pharmacyExpire: false,
+  setPharmacyExpired: () => {},
+  totalSale: [],
   isExpire: false,
-  setIsExpire: null,
-  modalExpire: (boolean) => {},
-  setToalSale: null,
-  totalPurchase: 0,
-  saleData: null,
-  setSaleData: null,
-  setToalPurchase: null,
+  setIsExpire: () => {},
+  fullName: "",
+  setFullName: () => {},
+  modalExpire: () => {},
+  setTotalSale: () => {},
+  totalPurchase: [],
+  saleData: [],
+  setSaleData: () => {},
+  setTotalPurchase: () => {},
   allMedicines: [],
-  setAllMedicines: [],
+  setAllMedicines: () => {},
+  pharmacyState: [],
+  setPharmacyState: () => {},
+  setError: null,
+
   openModal: () => {},
   closeModal: () => {},
   editMedodalOpen: () => {},
   editModalClose: () => {},
-  messgage: (type) => {},
-  emailHanderl: (type, value) => {},
-  passwordHanderl: (type, value) => {},
-  loadData: (type) => {},
-  onEditHandler: (id) => {},
-  onRemoveHadler: (id) => {},
+  message: () => {},
+  emailHanderl: () => {},
+  passwordHanderl: () => {},
+  loadData: () => {},
+  onEditHandler: () => {},
+  onRemoveHadler: () => {},
 });
+
 const initialState = {
   email: false,
   password: false,
   isEmail: true,
   isPassword: true,
   isLoading: false,
-
   error: false,
   route: false,
 };
+
+// Reducer for login
 const emailState = (state, action) => {
-  if (action.type === "LOADING") {
-    return { ...state, isLoading: true };
-  }
-  if (action.type === "CLOSEL") {
-    return { ...state, isLoading: false };
-  }
-  if (action.type === "ERROR") {
-    return { ...state, erro: false, isLoading: false };
-  }
-  if (action.type === "EMAIL") {
-    if (action.value === localStorage.getItem("Email")) {
-      console.log("true");
-
+  switch (action.type) {
+    case "LOADING":
+      return { ...state, isLoading: true };
+    case "CLOSEL":
+      return { ...state, isLoading: false };
+    case "ERROR":
+      return { ...state, error: true, isLoading: false };
+    case "EMAIL":
       return {
         ...state,
-        email: true,
-        isEmail: true,
-        route: true,
+        email: action.value === localStorage.getItem("Email"),
+        isEmail: action.value === localStorage.getItem("Email"),
+        route: action.value === localStorage.getItem("Email") && state.password,
       };
-    } else if (action.value !== localStorage.getItem("Email")) {
-      
-
+    case "PASSWORD":
       return {
         ...state,
-        email: false,
-        isEmail: false,
-        route: false,
+        password: action.value === localStorage.getItem("Password"),
+        isPassword: action.value === localStorage.getItem("Password"),
+        route: action.value === localStorage.getItem("Password") && state.email,
       };
-    }
-  }
-  if (action.type === "PASSWORD") {
-    if (action.value === localStorage.getItem("Password")) {
-      console.log("true");
-
-      return { ...state, password: true, isPassword: true, route: true };
-    } else if (action.value !== localStorage.getItem("Password")) {
-      console.log("false");
-
-      return { ...state, password: false, isPassword: false, route: false };
-    } else {
-      return { ...state, password: false, isPassword: false, route: false };
-    }
-  }
-  return state;
-};
-
-const totalamountInitial = [];
-const allTypeInitial = [];
-
-const totalAmountState = () => {
-  const data = localStorage.getItem("TotalAmount");
-
-  try {
-    return data ? JSON.parse(data) : totalamountInitial;
-  } catch (err) {
-    console.log(err, "localeStorage");
-    return totalamountInitial;
+    default:
+      return state;
   }
 };
 
-const allTypesAmountState = () => {
-  const data = localStorage.getItem("AlltypesAmount");
-
+// Helper to read localStorage safely
+const readLocalStorage = (key, defaultValue) => {
   try {
-    return data ? JSON.parse(data) : allTypeInitial;
+    const data = localStorage.getItem(key);
+    return data ? JSON.parse(data) : defaultValue;
   } catch (err) {
-    console.log(err, "localeStorage");
-    return allTypeInitial;
-  }
-};
-
-const expireInitialState = [];
-const expireMedicineState = () => {
-  const data = localStorage.getItem("ExpireMedicine");
-
-  try {
-    return data ? JSON.parse(data) : expireInitialState;
-  } catch (err) {
-    console.log(err, "localeStorage");
-    return expireInitialState;
-  }
-};
-
-const totalSaleInitialState = [];
-const totalSaleState = () => {
-  const data = localStorage.getItem("TotalSale");
-
-  try {
-    return data ? JSON.parse(data) : totalSaleInitialState;
-  } catch (err) {
-    console.log(err, "localeStorage");
-    return totalSaleInitialState;
-  }
-};
-const medicineinitialState = [];
-const medicinesInitial = () => {
-  const data = localStorage.getItem("Medicines");
-
-  try {
-    return data ? JSON.parse(data) : medicineinitialState;
-  } catch (err) {
-    console.log(err, "localeStorage");
-    return medicineinitialState;
-  }
-};
-const purcahseinitialState = [];
-const purcahsesInitial = () => {
-  const data = localStorage.getItem("TotalPurchase");
-
-  try {
-    return data ? JSON.parse(data) : purcahseinitialState;
-  } catch (err) {
-    console.log(err, "localeStorage");
-    return purcahseinitialState;
-  }
-};
-
-const salesItem = [];
-const salesInitialState = () => {
-  const data = localStorage.getItem("Sales");
-
-  try {
-    return data ? JSON.parse(data) : salesItem;
-  } catch (err) {
-    console.error(err, "LocaleStorage");
-    return salesItem;
+    console.error(err);
+    return defaultValue;
   }
 };
 
 function ContextProvider({ children }) {
+  const [pharmacyState, setPharmacyState] = useState(() =>
+    readLocalStorage("Pharmacy", [])
+  );
+  const [pharmacyExpire, setPharmacyExpired] = useState(() =>
+    readLocalStorage("PharmacyExpired", [])
+  );
+  const [printBill, setBillPrint] = useState([]);
+  const [isPrint, setIsPrint] = useState(false);
+
+  const [error, setError] = useState(false);
+  const [isPharmacyModal, setPharmacyModal] = useState(false);
   const [isOpenModal, setModal] = useState(false);
   const [isEditModalOpen, setEditModal] = useState(false);
-  const [allMedicines, setAllMedicines] = useState(() => medicinesInitial());
-  const [totalSale, setTotalSale] = useState(() => totalSaleState());
-  const [saleData, setSaleData] = useState(() => salesInitialState());
-
-  const [totalPurchase, setTotalPurcahse] = useState(() => purcahsesInitial());
-  const [totalAmount, setTotalAmount] = useState(() => totalAmountState());
-  const [allTypesAmount, setAlltypeAmount] = useState(() =>
-    allTypesAmountState()
+  const [allMedicines, setAllMedicines] = useState(() =>
+    readLocalStorage("Medicines", [])
   );
-
   const [expireMedicine, setExpireMedicine] = useState(() =>
-    expireMedicineState()
+    readLocalStorage("ExpireMedicine", [])
   );
-  const [isExpire, setIsExpire] = useState(expireMedicine ? true : false);
+  const [expiredMedicines, setExpiredMedicines] = useState(() =>
+    readLocalStorage("ExpiredMedicines", [])
+  );
+  const [totalAmount, setTotalAmount] = useState(() =>
+    readLocalStorage("TotalAmount", 0)
+  );
+  const [allTypesAmount, setAlltypeAmount] = useState(() =>
+    readLocalStorage("AlltypesAmount", 0)
+  );
+  const [totalSale, setTotalSale] = useState(() =>
+    readLocalStorage("TotalSale", [])
+  );
+  const [saleData, setSaleData] = useState(() => readLocalStorage("Sales", []));
+  const [totalPurchase, setTotalPurchase] = useState(() =>
+    readLocalStorage("TotalPurchase", [])
+  );
+  const [nameState, setFullName] = useState(() =>
+    readLocalStorage("FullName", "")
+  );
+
   const [userCode, dispatchUserCode] = useReducer(emailState, initialState);
 
-  // useEffect(() => {
-  //   dispatchUserCode({ type: "LOADING" });
-  // }, []);
-  useEffect(() => {
-    localStorage.setItem("Sales", JSON.stringify(saleData));
-  }, [saleData]);
-
+  // Persist all relevant states
+  useEffect(
+    () => localStorage.setItem("Sales", JSON.stringify(saleData)),
+    [saleData]
+  );
+  useEffect(
+    () => localStorage.setItem("Pharmacy", JSON.stringify(pharmacyState)),
+    [pharmacyState]
+  );
   useEffect(() => {
     localStorage.setItem("TotalAmount", JSON.stringify(totalAmount));
     localStorage.setItem("AlltypesAmount", JSON.stringify(allTypesAmount));
   }, [totalAmount, allTypesAmount]);
-  useEffect(() => {
-    localStorage.setItem("ExpireMedicine", JSON.stringify(expireMedicine));
-  }, [expireMedicine]);
-  useEffect(() => {
-    localStorage.setItem("TotalSale", JSON.stringify(totalSale));
-  }, [totalSale]);
-  useEffect(() => {
-    localStorage.setItem("Medicines", JSON.stringify(allMedicines));
-  }, [allMedicines]);
-  useEffect(() => {
-    localStorage.setItem("TotalPurchase", JSON.stringify(totalPurchase));
-  }, [totalPurchase]);
+  useEffect(
+    () =>
+      localStorage.setItem("ExpireMedicine", JSON.stringify(expireMedicine)),
+    [expireMedicine]
+  );
+  useEffect(
+    () =>
+      localStorage.setItem(
+        "ExpiredMedicines",
+        JSON.stringify(expiredMedicines)
+      ),
+    [expiredMedicines]
+  );
+  useEffect(
+    () => localStorage.setItem("TotalSale", JSON.stringify(totalSale)),
+    [totalSale]
+  );
+  useEffect(
+    () => localStorage.setItem("Medicines", JSON.stringify(allMedicines)),
+    [allMedicines]
+  );
+  useEffect(
+    () => localStorage.setItem("TotalPurchase", JSON.stringify(totalPurchase)),
+    [totalPurchase]
+  );
+  useEffect(
+    () => localStorage.setItem("FullName", JSON.stringify(nameState)),
+    [nameState]
+  );
+  useEffect(
+    () =>
+      localStorage.setItem("PharmacyExpired", JSON.stringify(pharmacyExpire)),
+    [pharmacyExpire]
+  );
 
-  const onEmailHander = (type, e) => {
+  const onEmailHandler = (type, value) => {
     dispatchUserCode({ type: "LOADING" });
-    dispatchUserCode({ type: type, value: e });
-    console.log(type, e);
-    // dispatchUserCode({ type: "CLOSEL" });
-    // dispatchEvent({type:'LOADING'})
+    dispatchUserCode({ type, value });
   };
 
-  //   console.log(userCode);
-  const onPasswordHandler = (type, e) => {
+  const onPasswordHandler = (type, value) => {
     dispatchUserCode({ type: "LOADING" });
-
-    dispatchUserCode({ type: type, value: e });
-    console.log(type, e);
-    // dispatchUserCode({ type: "CLOSEL" });
-  };
-  const messageHandler = (type) => {
-    dispatchUserCode({ type: type });
-  };
-  const loadDataHandler = (type) => {
-    dispatchUserCode({ type: type });
+    dispatchUserCode({ type, value });
   };
 
-  const onOpenModalHandler = () => {
-    setModal(true);
-  };
-
-  const onCloseModalHandler = () => {
-    setModal(false);
-  };
+  const messageHandler = (type) => dispatchUserCode({ type });
+  const loadDataHandler = (type) => dispatchUserCode({ type });
+  const onOpenModalHandler = () => setModal(true);
+  const onCloseModalHandler = () => setModal(false);
+  const openEditModal = () => setEditModal(true);
+  const closeEditModal = () => setEditModal(false);
   const editHandler = (id) => {};
   const removeHandler = (id) => {};
-  const openEditModal = () => {
-    setEditModal(true);
-  };
-  const closeEditModal = () => {
-    setEditModal(false);
-  };
+  const onModalExpire = (boolean) => setIsExpire(boolean);
 
-  const onModalExpire = (boolean) => {
-    setIsExpire(boolean);
-  };
   const value = {
     email: userCode.email,
     password: userCode.password,
@@ -274,37 +228,56 @@ function ContextProvider({ children }) {
     isPassword: userCode.isPassword,
     isLoading: userCode.isLoading,
     route: userCode.route,
+
     modalOpen: isOpenModal,
     isEditModalOpen: isEditModalOpen,
-    totalAmount: totalAmount,
-    allTypesAmount: allTypesAmount,
-    expireMedicine: expireMedicine,
-    totalSale: totalSale,
-    allMedicines: allMedicines,
-    totalPurchase: totalPurchase,
-    saleData: saleData,
-    isExpire: isExpire,
-    setIsExpire: setIsExpire,
-    modalExpire: onModalExpire,
-
-    setSaleData: setSaleData,
-    setToalPurchase: setTotalPurcahse,
-    setAllMedicines: setAllMedicines,
-    setToalSale: setTotalSale,
-    setExpireMedicine: setExpireMedicine,
+    pharmacyExpire: pharmacyExpire,
+    setPharmacyExpired: setPharmacyExpired,
+    totalAmount,
+    allTypesAmount,
+    expireMedicine,
+    expiredMedicines,
+    totalSale,
+    allMedicines,
+    totalPurchase,
+    saleData,
+    isExpire: !!expireMedicine.length,
+    fullName: nameState,
+    pharmacyState,
+    error,
+    error,
+    isPharmacyModal: isPharmacyModal,
+    printBill: printBill,
+    setBillPrint: setBillPrint,
+    isPrint: isPrint,
+    setIsPrint: setIsPrint,
+    setPharmacyModal: setPharmacyModal,
+    setPharmacyState,
+    setFullName,
+    setIsExpire: onModalExpire,
+    setSaleData,
+    setTotalPurchase,
+    setAllMedicines,
+    setTotalSale,
+    setExpireMedicine,
+    setExpiredMedicines,
     setTotalAmount,
     setAlltypeAmount,
+    setError,
+
     openModal: onOpenModalHandler,
     closeModal: onCloseModalHandler,
     editMedodalOpen: openEditModal,
     editModalClose: closeEditModal,
+
     loadData: loadDataHandler,
     message: messageHandler,
-    emailHanderl: onEmailHander,
+    emailHanderl: onEmailHandler,
     passwordHanderl: onPasswordHandler,
     onEditHandler: editHandler,
     onRemoveHadler: removeHandler,
   };
+
   return <Context.Provider value={value}>{children}</Context.Provider>;
 }
 

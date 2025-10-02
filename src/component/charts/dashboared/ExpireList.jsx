@@ -1,36 +1,25 @@
-import React from "react";
-import Delete from "../Delete";
-import EditSvg from "../EditSvg";
+import React, { useState } from "react";
 import useAppContext from "../../../context/useAppContext";
 
-function ExpireList({ items, onRevomeHandler, onEditHandler, searData }) {
+function ExpireList({ items, onRevomeHandler, onEditHandler, searData,recordPages }) {
   const { editMedodalOpen, expireMedicine } = useAppContext();
-  const itemarra = expireMedicine || [];
-  const removeHandler = (id) => {
-    onRevomeHandler(id);
-  };
-
-  const editHandler = (id) => {
-    onEditHandler(id);
-    editMedodalOpen();
-  };
-
+ 
+  const itemarra = recordPages || [];
+  
   return (
     <div
-      className="tabel shadow-lg overflow-scroll max-h-[20rem] rounded-lg
-    overflow-y-scroll overflow-x-auto scrollbar scrollbar-thumb-cyan-900 scrollbar-track-cyan-200
+      className="tabel shadow-lg  max-h-[20rem] rounded-lg
+    overflow-y-auto overflow-x-auto scrollbar scrollbar-thumb-cyan-900 scrollbar-track-cyan-200
     
     "
     >
-      <table className="  w-full bg-cyan-200 rounded-xl">
+      <table className="  w-full bg-cyan-200 rounded-xl text-left">
         <thead className="bg-cyan-300">
           <tr className="">
             <th className=" py-2 px-4 ">Name</th>
-            <th className=" py-2 px-4 ">QU</th>
+            <th className=" py-2 px-4 ">Quantity</th>
             <th className=" py-2 px-4 ">Expire Date</th>
-            <th className=" py-2 px-4 ">
-              Manuefacture
-            </th>
+            <th className=" py-2 px-4 ">Manuefacture</th>
             {/* <th className=" py-2 px-4 "></th> */}
           </tr>
         </thead>
@@ -45,18 +34,10 @@ function ExpireList({ items, onRevomeHandler, onEditHandler, searData }) {
                 .map((item) => {
                   return (
                     <tr className="tr" key={item.id}>
-                      <td className=" py-2 px-4  ">
-                        {item.name}
-                      </td>
-                      <td className=" py-2 px-4  ">
-                        {item.qauntity}
-                      </td>
-                      <td className=" py-2 px-4  ">
-                        {item.expireDate}
-                      </td>
-                      <td className=" py-2 px-4  ">
-                        {item.manuefacture}
-                      </td>
+                      <td className=" py-2 px-4  ">{item.name}</td>
+                      <td className=" py-2 px-4  ">{item.qauntity}</td>
+                      <td className=" py-2 px-4  ">{item.expireDate}</td>
+                      <td className=" py-2 px-4  ">{item.manuefacture}</td>
                       {/* <td className=" flex justify-around  py-2 px-4  text-right ">
                         <button
                           className="cursor-pointer "
@@ -77,6 +58,8 @@ function ExpireList({ items, onRevomeHandler, onEditHandler, searData }) {
             : []}
         </tbody>
       </table>
+    
+     
     </div>
   );
 }
