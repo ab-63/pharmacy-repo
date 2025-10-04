@@ -74,7 +74,7 @@ function PharmacyList({ items, searData,onEditHandler,onDeleteHandler }) {
             : (
               <tr>
                 <td colSpan="5" className="text-center py-4 text-gray-500 italic">
-                  No purchases found
+                  No Pahrmacy Medicine found
                 </td>
               </tr>
             )}

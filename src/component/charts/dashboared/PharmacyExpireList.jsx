@@ -99,7 +99,7 @@ function PharmacyExpireList() {
             : (
               <tr>
                 <td colSpan="5" className="text-center py-4 text-gray-500 italic">
-                  No purchases found
+                  No Expire found
                 </td>
               </tr>
             )}
