@@ -5,7 +5,7 @@ const Overlay = (props) => {
   return (
     <div
       className="min-w-screen min-h-screen fixed
-       top-0 left-0 bg-black opacity-56 "
+       top-0 left-0 bg-black opacity-60 z-50 "
       onClick={props.onClose}
     ></div>
   );

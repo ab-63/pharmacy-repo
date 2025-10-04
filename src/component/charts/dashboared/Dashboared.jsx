@@ -17,7 +17,10 @@ function Dashboared(props) {
     <div className="bg-cyan-200 min-h-screen">
       <div className="bg-cyan-200  min-h-screen">
         <div className="min-h-screen  grid grid-cols-[220px_auto_auto_auto_auto]  grid-rows-[100px_1fr_1fr_1fr]  bg-cyan-200 rounded-2xl">
-          <div className=" col-span-6  space-x-2 row-start-1 mb-2 rounded-lg bg-cyan-200 shadow-lg  p-4 flex items-center rounded-tr-2xl  ">
+          <div className=" col-span-6  space-x-2 
+          row-start-1 mb-2  rounded-lg bg-cyan-200 shadow-lg
+          h-[7rem]
+            px-4 py-3 flex items-center rounded-tr-2xl fixed  top-0 right-0 left-55 z-40">
             <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold ">
               Welcome to Pharmacy
             </h1>

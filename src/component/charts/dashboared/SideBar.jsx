@@ -21,7 +21,7 @@ function SideBar(props) {
 
   console.log(subPage);
   return (
-    <div className="">
+    <div className="fixed">
       <div className="flex items-center mb-12 justify-center space-x-2">
         <Svg />
         <h2 className="text-xl font-semibold">Pharmacy</h2>
