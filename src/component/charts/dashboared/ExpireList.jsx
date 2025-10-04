@@ -55,7 +55,13 @@ function ExpireList({ items, onRevomeHandler, onEditHandler, searData,recordPage
                     </tr>
                   );
                 })
-            : []}
+            :(
+              <tr>
+                <td colSpan="5" className="text-center py-4 text-gray-500 italic">
+                  No purchases found
+                </td>
+              </tr>
+            )}
         </tbody>
       </table>
     

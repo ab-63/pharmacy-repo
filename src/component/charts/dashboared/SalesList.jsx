@@ -56,7 +56,13 @@ function SalesList({ items, onSaleHandler, searData }) {
                     </tr>
                   );
                 })
-            : []}
+            : (
+              <tr>
+                <td colSpan="5" className="text-center py-4 text-gray-500 italic">
+                  No purchases found
+                </td>
+              </tr>
+            )}
         </tbody>
       </table>
     </div>
