@@ -78,7 +78,7 @@ function Autenticate() {
         </p>
         <form className=" space-y-4" onSubmit={submitHandler}>
           <div className="">
-            <label className="flex  mb-2 space-x-14 "><p>Email</p> <span>This is the Email (m@gmail.com)</span></label>
+            <label className="flex  mb-2 space-x-14 "><p>Email</p> <span className="text-green-700">This is the Email (m@gmail.com)</span></label>
             <input
               type="email"
               placeholder="user@gmail.com"
@@ -92,7 +92,7 @@ function Autenticate() {
             {!ctx.isEmail && <p className="text-red-500 "> Invalid Email</p>}
           </div>
           <div className="mb-7">
-            <label className=" mb-2 w-full flex space-x-8"><p>Password</p> <span className="">This is the password (1234)</span></label>
+            <label className=" mb-2 w-full flex space-x-8"><p>Password</p> <span className="text-green-700">This is the password (1234)</span></label>
             <input
               type="password"
               placeholder="Enter Your Password"
