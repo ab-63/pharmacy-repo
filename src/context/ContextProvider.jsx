@@ -3,7 +3,7 @@ import Pahrmacy from "../component/charts/dashboared/Pahrmacy";
 
 const admin = {
   Email: "m@gmail.com",
-  Password: "1234",
+  Password: 1234,
 };
 
 // Default context values
@@ -63,8 +63,8 @@ export const Context = React.createContext({
 });
 
 const initialState = {
-  email: true,
-  password: true,
+  email: false,
+  password: false,
   isEmail: true,
   isPassword: true,
   isLoading: false,
@@ -84,16 +84,16 @@ const emailState = (state, action) => {
     case "EMAIL":
       return {
         ...state,
-        email: action.value === localStorage.getItem("Email"),
-        isEmail: action.value === localStorage.getItem("Email"),
-        route: action.value === localStorage.getItem("Email") && state.password,
+        email: action.value === admin.Email,
+        isEmail: action.value === admin.Email,
+        route: action.value === admin.Email && state.password,
       };
     case "PASSWORD":
       return {
         ...state,
-        password: action.value === localStorage.getItem("Password"),
-        isPassword: action.value === localStorage.getItem("Password"),
-        route: action.value === localStorage.getItem("Password") && state.email,
+        password: action.value === admin.Password,
+        isPassword: action.value === admin.Password,
+        route: action.value === admin.Password && state.email,
       };
     default:
       return state;
