@@ -45,9 +45,9 @@ function Autenticate() {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    ctx.loadData("LOADING");
-    ctx.emailHanderl("EMAIL", email);
-    ctx.passwordHanderl("PASSWORD", password);
+    // ctx.loadData("LOADING");
+    // ctx.emailHanderl("EMAIL", email);
+    // ctx.passwordHanderl("PASSWORD", password);
     //  <Navigate to="/dashboard"/>;
     navigate("/");
     ctx.loadData("CLOSEL");

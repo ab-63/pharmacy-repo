@@ -63,8 +63,8 @@ export const Context = React.createContext({
 });
 
 const initialState = {
-  email: false,
-  password: false,
+  email: true,
+  password: true,
   isEmail: true,
   isPassword: true,
   isLoading: false,
